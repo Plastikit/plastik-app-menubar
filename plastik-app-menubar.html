@@ -224,7 +224,8 @@ Desktop-style menubar for applications
                 menuBar._setMenuOpened(this.classList.contains('expanded'))
 
                 this.querySelector('.menu').style.top = (rect.bottom - rect.top - 1) + 'px'
-                this.querySelector('.menu').style.left = '0'
+                this.querySelector('.menu').style.left = '-1px'
+                this.querySelector('.menu').style.minWidth = rect.width + 'px'
               } else {
                 this.querySelector('.menu').style.top = '0'
                 this.querySelector('.menu').style.left = rect.width + 'px'
@@ -254,7 +255,8 @@ Desktop-style menubar for applications
 
               if (this.parentNode == container) {
                 this.querySelector('.menu').style.top = (rect.bottom - rect.top - 1) + 'px'
-                this.querySelector('.menu').style.left = '0'
+                this.querySelector('.menu').style.left = '-1px'
+                this.querySelector('.menu').style.minWidth = rect.width + 'px'
               } else {
                 this.querySelector('.menu').style.top = '0'
                 this.querySelector('.menu').style.left = rect.width + 'px'
