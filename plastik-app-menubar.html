@@ -157,6 +157,10 @@ Desktop-style menubar for applications
             container.removeChild(container.firstChild)
         }
 
+        if (!Array.isArray(menu)) {
+          return
+        }
+
         function addMenuItems(items, parent, isRoot) {
           items.forEach(function (item) {
             var itemElement
