@@ -26,7 +26,12 @@ Desktop-style menubar for applications
         white-space: nowrap;
       }
 
+      .menu-item-text {
+        flex: 1;
+      }
+
       .menu-item {
+        display: flex;
         color: #212121;
         text-decoration: none;
         padding: 3px 7px 5px 7px;
@@ -45,7 +50,6 @@ Desktop-style menubar for applications
       }
 
       .menu-item.expanded {
-        display: flex;
         background: #eee;
         border-color: #eee;
       }
@@ -167,8 +171,12 @@ Desktop-style menubar for applications
             }
             itemElement.classList.add('menu-item')
             itemElement.classList.add('plastik-app-menubar')
-            itemElement.appendChild(document.createTextNode(item.text))
-            if (Array.isArray(item.children)) {
+            var itemText = document.createElement('span')
+            itemText.classList.add('menu-item-text')
+            itemText.classList.add('plastik-app-menubar')
+            itemText.appendChild(document.createTextNode(item.text))
+            itemElement.appendChild(itemText)
+            if (Array.isArray(item.children) && item.children.length > 0) {
               if (!isRoot) {
                 var arrow = document.createElement('span')
                 arrow.classList.add('arrow')
