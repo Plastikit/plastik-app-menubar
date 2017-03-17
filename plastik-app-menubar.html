@@ -45,6 +45,7 @@ Desktop-style menubar for applications
       }
 
       .menu-item.expanded {
+        display: flex;
         background: #eee;
         border-color: #eee;
       }
@@ -83,6 +84,26 @@ Desktop-style menubar for applications
         outline: none;
         padding: 6px 0;
         z-index: 1003;
+      }
+
+      .arrow {
+        font-size: 70%;
+        text-align: right;
+        padding-top: 3px;
+        padding-right: 0;
+        padding-left: 35px;
+        position: relative;
+        left: auto;
+        right: 0;
+        color: #333;
+        opacity: .5;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+
+      .menu-item.expanded > .arrow {
+        opacity: 1;
       }
     </style>
     <div class="menu-bar-container"></div>
@@ -132,7 +153,7 @@ Desktop-style menubar for applications
             container.removeChild(container.firstChild)
         }
 
-        function addMenuItems(items, parent) {
+        function addMenuItems(items, parent, isRoot) {
           items.forEach(function (item) {
             var itemElement
             if (item.href) {
@@ -145,14 +166,19 @@ Desktop-style menubar for applications
               itemElement = document.createElement('div')
             }
             itemElement.classList.add('menu-item')
-            itemElement.classList.add('style-scope')
             itemElement.classList.add('plastik-app-menubar')
             itemElement.appendChild(document.createTextNode(item.text))
             if (Array.isArray(item.children)) {
+              if (!isRoot) {
+                var arrow = document.createElement('span')
+                arrow.classList.add('arrow')
+                arrow.classList.add('plastik-app-menubar')
+                arrow.appendChild(document.createTextNode('►'))
+                itemElement.appendChild(arrow)
+              }
               itemElement.classList.add('has-children')
               var subMenuElement = document.createElement('div')
               subMenuElement.classList.add('menu')
-              subMenuElement.classList.add('style-scope')
               subMenuElement.classList.add('plastik-app-menubar')
               addMenuItems(item.children, subMenuElement)
               itemElement.appendChild(subMenuElement)
@@ -161,7 +187,7 @@ Desktop-style menubar for applications
           })
         }
 
-        addMenuItems(menu, container)
+        addMenuItems(menu, container, true)
 
         var menuItems = []
         var menuBar = this
