@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>plastik-app-menubar demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../plastik-app-menubar.html">
+    <link rel="import" href="../plastik-app-menubar-item.html">
+    <link rel="import" href="../plastik-app-menubar-menu.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic plastik-app-menubar demo</h3>
+      <demo-snippet>
+        <template>
+          <plastik-app-menubar id="menubar">
+            <plastik-app-menubar-item>
+              File
+              <plastik-app-menubar-menu>
+                <plastik-app-menubar-item>New</plastik-app-menubar-item>
+                <plastik-app-menubar-item>Open...</plastik-app-menubar-item>
+                <plastik-app-menubar-item>Delete</plastik-app-menubar-item>
+              </plastik-app-menubar-menu>
+            </plastik-app-menubar-item>
+            <plastik-app-menubar-item>Edit</plastik-app-menubar-item>
+            <plastik-app-menubar-item>View</plastik-app-menubar-item>
+          </plastik-app-menubar>
+          <script>
+            var menubar = document.querySelector('#menubar')
+            console.log(menubar)
+            menubar.menu = [
+              {
+                text: "File",
+                children: [
+                  { text: "New" },
+                  { text: "Open..." },
+                  { text: "Delete" }
+                ]
+              },
+              { text: "Edit" },
+              { text: "View" }
+            ]
+            console.log(menubar.menu)
+          </script>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

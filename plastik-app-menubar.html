@@ -1,0 +1,182 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`plastik-app-menubar`
+Desktop-style menubar for applications
+
+@demo demo/index.html 
+-->
+
+<dom-module id="plastik-app-menubar">
+  <template>
+    <style>
+      .menu-bar-container {
+        display: flex;
+        cursor: default;
+        font-size: 13px;
+        height: 29px;
+        outline: none;
+        position: relative;
+        white-space: nowrap;
+      }
+
+      .menu-item {
+        padding: 3px 7px 5px 7px;
+        margin-top: 2px;
+        border: 1px solid transparent;
+        outline: none;
+      }
+
+      .menu-item:hover {
+        background: #eee;
+        border-color: #eee;
+      }
+
+      .menu-item.expanded {
+        background: #fff;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0, 0, 0, .2);
+        border-bottom: none;
+        -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+        -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+        color: black;
+      }
+
+      .menu-item .menu {
+        display: none;
+        flex-direction: column;
+      }
+
+      .menu-item.expanded > .menu {
+        display: flex;
+        position: absolute;
+        background: #fff;
+        -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+        -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+        -moz-transition: opacity 0.218s;
+        -webkit-transition: opacity 0.218s;
+        -o-transition: opacity 0.218s;
+        transition: opacity 0.218s;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0, 0, 0, .2);
+        cursor: default;
+        margin: 0;
+        outline: none;
+        padding: 6px 0;
+        z-index: 1003;
+      }
+    </style>
+    <div class="menu-bar-container"></div>
+    <!--<div class="menu-item">
+      File
+      <div class="menu">
+        <div class="menu-item">New</div>
+        <div class="menu-item">Open...</div>
+        <div class="menu-item">Delete</div>
+      </div>
+    </div>
+    <div class="menu-item">
+      Edit
+    </div>
+    <div class="menu-item">
+      View
+    </div>-->
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'plastik-app-menubar',
+
+      properties: {
+        menuOpened: {
+          type: Boolean,
+          value: false,
+          readOnly: true
+        },
+        menu: {
+          type: Object,
+          observer: '_menuChanged'
+        }
+      },
+      ready: function () {
+        if (Array.isArray(this.menu)) {
+          this._menuChanged(this.menu)
+        } else {
+          console.log('ready but bad menu', this.menu)
+        }
+      },
+      _menuChanged: function (menu) {
+        var container = this.querySelector('.menu-bar-container')
+        if (!container) return console.log('no container??', container)
+        while (container.firstChild) {
+            container.removeChild(container.firstChild)
+        }
+
+        function addMenuItems(items, parent) {
+          items.forEach(function (item) {
+            var itemElement = document.createElement('div')
+            itemElement.classList.add('menu-item')
+            itemElement.classList.add('style-scope')
+            itemElement.classList.add('plastik-app-menubar')
+            itemElement.appendChild(document.createTextNode(item.text))
+            if (Array.isArray(item.children)) {
+              var subMenuElement = document.createElement('div')
+              subMenuElement.classList.add('menu')
+              subMenuElement.classList.add('style-scope')
+              subMenuElement.classList.add('plastik-app-menubar')
+              addMenuItems(item.children, subMenuElement)
+              itemElement.appendChild(subMenuElement)
+            }
+            parent.appendChild(itemElement)
+          })
+        }
+
+        addMenuItems(menu, container)
+
+        var menuItems = []
+        var menuBar = this
+        this.querySelectorAll('.menu-item').forEach(function (item) {
+          menuItems.push(item)
+          item.addEventListener('click', function () {
+            var self = this
+            menuItems.forEach(function (menuItem) {
+              if (menuItem !== self) {
+                  menuItem.classList.remove('expanded')
+              }
+            })
+            if (item.querySelector('.menu')) {
+              this.classList.toggle('expanded')
+              menuBar._setMenuOpened(this.classList.contains('expanded'))
+              var rect = this.getBoundingClientRect()
+              this.querySelector('.menu').style.top = (rect.bottom - rect.top - 1) + 'px'
+              this.querySelector('.menu').style.left = '0'
+            }
+          })
+          item.addEventListener('mouseover', function () {
+            var self = this
+            if (this.classList.contains('expanded') || !menuBar.menuOpened) {
+              return
+            }
+            menuItems.forEach(function (menuItem) {
+              if (menuItem !== self) {
+                menuItem.classList.remove('expanded')
+              }
+            })
+
+            if (item.querySelector('.menu')) {
+              this.classList.add('expanded')
+              var rect = this.getBoundingClientRect()
+
+              this.querySelector('.menu').style.top = (rect.bottom - rect.top - 1) + 'px'
+              this.querySelector('.menu').style.left = '0'
+            }
+          })
+        })
+      }
+
+    })
+  </script>
+</dom-module>
