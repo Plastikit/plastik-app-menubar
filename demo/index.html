@@ -36,20 +36,35 @@
           </plastik-app-menubar>
           <script>
             var menubar = document.querySelector('#menubar')
-            console.log(menubar)
             menubar.menu = [
               {
-                text: "File",
+                text: 'File',
                 children: [
-                  { text: "New" },
-                  { text: "Open..." },
-                  { text: "Delete" }
+                  {
+                    text: 'New',
+                    children: [
+                      { text: 'Document', href: 'https://www.google.com/' },
+                      { text: 'Spreadsheet', href: 'https://www.yahoo.com/' },
+                      {
+                        text: 'Presentation',
+                        children: [
+                          { text: 'An ugly one' },
+                          { text: 'A pretty one' },
+                          { text: 'A boring one' }
+                        ]
+                      },
+                    ]
+                  },
+                  { text: 'Open...' },
+                  { text: 'Delete' },
+                  { text: 'Page Setup...' },
+                  { text: 'Properties' },
+                  { text: 'Close' }
                 ]
               },
-              { text: "Edit" },
-              { text: "View" }
+              { text: 'Edit' },
+              { text: 'View' }
             ]
-            console.log(menubar.menu)
           </script>
         </template>
       </demo-snippet>
