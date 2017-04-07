@@ -26,12 +26,7 @@ Desktop-style menubar for applications
         white-space: nowrap;
       }
 
-      .menu-item-text {
-        flex: 1;
-      }
-
       .menu-item {
-        display: flex;
         color: #212121;
         text-decoration: none;
         padding: 3px 7px 5px 7px;
@@ -210,7 +205,7 @@ Desktop-style menubar for applications
           })
         })
 
-        this.querySelectorAll('.menu-item').forEach(function (item) {
+        Array.from(this.querySelectorAll('.menu-item')).forEach(function (item) {
           menuItems.push(item)
           item.addEventListener('click', function (e) {
             e.stopPropagation()
